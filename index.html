@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Hidden Animal Adventure</title>
+
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        "Trebuchet MS",
+        Arial,
+        sans-serif;
+
+    text-align: center;
+
+    color: #29452b;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #fff9df 0%,
+            #f4efd9 45%,
+            #e7dfc2 100%
+        );
+
+    overflow-x: hidden;
+}
+
+
+/* =====================================================
+   TOP HEADER
+===================================================== */
+
+.header {
+
+    width: 900px;
+
+    max-width: 94vw;
+
+    margin: 18px auto 12px;
+
+    padding: 14px 18px;
+
+    background: rgba(255,255,255,0.92);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 6px 20px rgba(60,70,40,0.12);
+
+    border: 2px solid rgba(255,255,255,0.8);
+
+    position: relative;
+}
+
+
+h1 {
+
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.3px;
+
+}
+
+
+.subtitle {
+
+    margin-top: 5px;
+
+    font-size: 17px;
+
+    color: #60705a;
+
+}
+
+
+/* =====================================================
+   TOP CONTROLS
+===================================================== */
+
+.controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+.controlButton {
+
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 14px;
+
+    background: #f1e7bd;
+
+    color: #40583d;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,0.12);
+
+    transition:
+        transform .2s,
+        background .2s;
+}
+
+
+.controlButton:hover {
+
+    transform: translateY(-2px);
+
+    background: #e8d99d;
+}
+
+
+.controlButton:active {
+
+    transform: scale(.95);
+}
+
+
+/* =====================================================
+   GAME INFO
+===================================================== */
+
+.infoBar {
+
+    width: 900px;
+
+    max-width: 94vw;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.infoCard {
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 9px 16px;
+
+    box-shadow:
+        0 4px 12px rgba(50,60,40,0.10);
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+
+#scoreCard {
+
+    color: #8a6410;
+}
+
+
+#levelCard {
+
+    color: #426440;
+}
+
+
+/* =====================================================
+   GAME
+===================================================== */
+
+#game {
+
+    position: relative;
+
+    width: 900px;
+
+    max-width: 94vw;
+
+    margin: auto;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background: white;
+
+    box-shadow:
+        0 12px 35px rgba(40,55,35,0.20);
+
+    border: 6px solid white;
+
+    transform: translateZ(0);
+}
+
+
+#game img {
+
+    width: 100%;
+
+    height: auto;
+
+    display: block;
+}
+
+
+/* =====================================================
+   HOTSPOT
+===================================================== */
+
+.hotspot {
+
+    position: absolute;
+
+    cursor: pointer;
+
+    background: transparent;
+
+    border: none;
+
+    padding: 0;
+
+    z-index: 10;
+}
+
+
+/* =====================================================
+   EFFECT LAYER
+===================================================== */
+
+#effects {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 30;
+}
+
+
+/* =====================================================
+   GLOW
+===================================================== */
+
+.glow {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 5px solid rgba(255,255,255,.95);
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    animation:
+        glowAnimation .9s ease-out forwards;
+
+    box-shadow:
+        0 0 15px #fff,
+        0 0 30px #fff,
+        0 0 55px rgba(255,230,100,.9);
+}
+
+
+@keyframes glowAnimation {
+
+    0% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(0);
+
+        opacity: 1;
+    }
+
+    55% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.5);
+
+        opacity: .75;
+    }
+
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(2.7);
+
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+.star {
+
+    position: absolute;
+
+    font-size: 26px;
+
+    animation:
+        starFly 1.2s ease-out forwards;
+}
+
+
+@keyframes starFly {
+
+    0% {
+
+        transform:
+            translate(0,0)
+            scale(0)
+            rotate(0deg);
+
+        opacity: 0;
+    }
+
+    20% {
+
+        transform:
+            translate(0,0)
+            scale(1.3)
+            rotate(30deg);
+
+        opacity: 1;
+    }
+
+    100% {
+
+        transform:
+            translate(var(--x),var(--y))
+            scale(.8)
+            rotate(220deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   CONFETTI
+===================================================== */
+
+.confetti {
+
+    position: absolute;
+
+    width: 8px;
+
+    height: 14px;
+
+    border-radius: 3px;
+
+    background: #f4c542;
+
+    animation:
+        confettiFall 1.3s ease-out forwards;
+}
+
+
+@keyframes confettiFall {
+
+    0% {
+
+        transform:
+            translate(0,0)
+            rotate(0deg);
+
+        opacity: 1;
+    }
+
+    100% {
+
+        transform:
+            translate(var(--x),var(--y))
+            rotate(600deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   +1
+===================================================== */
+
+.plusOne {
+
+    position: absolute;
+
+    font-size: 34px;
+
+    font-weight: 900;
+
+    color: #fff;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.3);
+
+    animation:
+        scoreFloat 1s ease-out forwards;
+}
+
+
+@keyframes scoreFloat {
+
+    0% {
+
+        transform:
+            translate(-50%,0)
+            scale(.4);
+
+        opacity: 0;
+    }
+
+    20% {
+
+        transform:
+            translate(-50%,-10px)
+            scale(1.3);
+
+        opacity: 1;
+    }
+
+    100% {
+
+        transform:
+            translate(-50%,-110px)
+            scale(1);
+
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   MESSAGE CARD
+===================================================== */
+
+#message {
+
+    width: 900px;
+
+    max-width: 94vw;
+
+    margin: 15px auto 10px;
+
+    min-height: 55px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 12px 20px;
+
+    background: rgba(255,255,255,.88);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 5px 15px rgba(50,60,40,.10);
+
+    font-size: 23px;
+
+    font-weight: 900;
+
+    color: #365c36;
+}
+
+
+#message.celebrate {
+
+    animation:
+        messageCelebrate .8s ease-in-out;
+}
+
+
+@keyframes messageCelebrate {
+
+    0% {
+
+        transform:
+            scale(1);
+    }
+
+    25% {
+
+        transform:
+            scale(1.08)
+            rotate(-2deg);
+    }
+
+    50% {
+
+        transform:
+            scale(1.18)
+            rotate(2deg);
+    }
+
+    75% {
+
+        transform:
+            scale(1.08)
+            rotate(-1deg);
+    }
+
+    100% {
+
+        transform:
+            scale(1)
+            rotate(0deg);
+    }
+}
+
+
+/* =====================================================
+   NEXT BUTTON
+===================================================== */
+
+#nextButton {
+
+    display: none;
+
+    margin: 5px auto 25px;
+
+    padding: 14px 34px;
+
+    border: none;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f873f,
+            #2f652f
+        );
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 15px rgba(40,80,40,.25);
+
+    transition:
+        transform .2s,
+        box-shadow .2s;
+}
+
+
+#nextButton:hover {
+
+    transform:
+        translateY(-3px)
+        scale(1.04);
+
+    box-shadow:
+        0 9px 20px rgba(40,80,40,.30);
+}
+
+
+#nextButton:active {
+
+    transform:
+        scale(.95);
+}
+
+
+/* =====================================================
+   PAGE TRANSITION
+===================================================== */
+
+#game.pageChange {
+
+    animation:
+        pageChange .45s ease;
+}
+
+
+@keyframes pageChange {
+
+    0% {
+
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+
+    50% {
+
+        opacity: 0;
+
+        transform:
+            scale(.96);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+}
+
+
+/* =====================================================
+   FINAL SCREEN
+===================================================== */
+
+.finalScreen {
+
+    animation:
+        finalAppear 1s ease;
+}
+
+
+@keyframes finalAppear {
+
+    0% {
+
+        transform:
+            scale(.5);
+
+        opacity: 0;
+    }
+
+    70% {
+
+        transform:
+            scale(1.08);
+
+        opacity: 1;
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+    }
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    h1 {
+
+        font-size: 25px;
+    }
+
+    .subtitle {
+
+        font-size: 14px;
+    }
+
+    .infoCard {
+
+        font-size: 14px;
+
+        padding:
+            8px 10px;
+    }
+
+    #message {
+
+        font-size: 19px;
+    }
+
+    #nextButton {
+
+        font-size: 18px;
+
+        padding:
+            12px 25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="header">
+
+    <h1>
+        🦁 Hidden Animal Adventure
+    </h1>
+
+    <div class="subtitle">
+        Explore • Find • Learn • Have Fun!
+    </div>
+
+
+    <div class="controls">
+
+        <button
+            class="controlButton"
+            onclick="toggleMusic()"
+            id="musicButton">
+
+            🎵 Music OFF
+
+        </button>
+
+
+        <button
+            class="controlButton"
+            onclick="repeatAnimal()">
+
+            🔊 Hear Animal
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INFO
+===================================================== -->
+
+<div class="infoBar">
+
+    <div
+        class="infoCard"
+        id="levelCard">
+
+        🗺️ Adventure
+        <span id="levelNumber">1</span>
+        / 5
+
+    </div>
+
+
+    <div
+        class="infoCard"
+        id="scoreCard">
+
+        ⭐
+        <span id="points">0</span>
+        Stars
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     GAME
+===================================================== -->
+
+<div id="game">
+
+    <img
+        id="sceneImage"
+        src="images/jungle.jpeg"
+        alt="Hidden animal scene"
+    >
+
+
+    <div
+        id="hotspot"
+        class="hotspot">
+    </div>
+
+
+    <div id="effects"></div>
+
+</div>
+
+
+<!-- =====================================================
+     MESSAGE
+===================================================== -->
+
+<div id="message">
+
+    👀 Look carefully...
+    
+</div>
+
+
+<!-- =====================================================
+     NEXT
+===================================================== -->
+
+<button
+    id="nextButton"
+    onclick="nextLevel()">
+
+    Next Adventure ➡️
+
+</button>
+
+
+<!-- =====================================================
+     BACKGROUND MUSIC
+===================================================== -->
+
+<audio
+    id="backgroundMusic"
+    loop
+    preload="none">
+
+    <source
+        src="audio/background.mp3"
+        type="audio/mpeg">
+
+</audio>
+
+
+<script>
+
+
+/* =====================================================
+   LEVEL DATA
+===================================================== */
+
+const levels = [
+
+    {
+        image: "images/jungle.jpeg",
+
+        animal: "Lion",
+
+        sound: "Lion!",
+
+        left: 727,
+        top: 352,
+        width: 98,
+        height: 78
+    },
+
+
+    {
+        image: "images/ocean.jpeg",
+
+        animal: "Octopus",
+
+        sound: "Octopus!",
+
+        left: 634,
+        top: 299,
+        width: 77,
+        height: 90
+    },
+
+
+    {
+        image: "images/desert.jpeg",
+
+        animal: "Camel",
+
+        sound: "Camel!",
+
+        left: 104,
+        top: 305,
+        width: 122,
+        height: 52
+    },
+
+
+    {
+        image: "images/forest.jpeg",
+
+        animal: "Fox",
+
+        sound: "Fox!",
+
+        left: 69,
+        top: 311,
+        width: 63,
+        height: 73
+    },
+
+
+    {
+        image: "images/snow.jpeg",
+
+        animal: "Penguin",
+
+        sound: "Penguin!",
+
+        left: 691,
+        top: 351,
+        width: 64,
+        height: 51
+    }
+
+];
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentLevel = 0;
+
+let score = 0;
+
+let found = false;
+
+let musicOn = false;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const image =
+    document.getElementById(
+        "sceneImage"
+    );
+
+
+const hotspot =
+    document.getElementById(
+        "hotspot"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const points =
+    document.getElementById(
+        "points"
+    );
+
+
+const nextButton =
+    document.getElementById(
+        "nextButton"
+    );
+
+
+const game =
+    document.getElementById(
+        "game"
+    );
+
+
+const effects =
+    document.getElementById(
+        "effects"
+    );
+
+
+const levelNumber =
+    document.getElementById(
+        "levelNumber"
+    );
+
+
+const music =
+    document.getElementById(
+        "backgroundMusic"
+    );
+
+
+const musicButton =
+    document.getElementById(
+        "musicButton"
+    );
+
+
+/* =====================================================
+   LOAD LEVEL
+===================================================== */
+
+function loadLevel() {
+
+
+    const level =
+        levels[currentLevel];
+
+
+    found = false;
+
+
+    image.style.display =
+        "block";
+
+
+    image.src =
+        level.image;
+
+
+    levelNumber.innerText =
+        currentLevel + 1;
+
+
+    message.innerHTML =
+        "🔎 Find the hidden " +
+        level.animal +
+        "!";
+
+
+    message.classList.remove(
+        "celebrate"
+    );
+
+
+    nextButton.style.display =
+        "none";
+
+
+    effects.innerHTML =
+        "";
+
+
+    hotspot.classList.remove(
+        "found"
+    );
+
+
+    if (image.complete) {
+
+        positionHotspot();
+
+    } else {
+
+        image.onload =
+            positionHotspot;
+
+    }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE HOTSPOT
+===================================================== */
+
+function positionHotspot() {
+
+
+    const level =
+        levels[currentLevel];
+
+
+    const scaleX =
+        image.clientWidth / 900;
+
+
+    const scaleY =
+        image.clientHeight / 520;
+
+
+    hotspot.style.left =
+        (level.left * scaleX) +
+        "px";
+
+
+    hotspot.style.top =
+        (level.top * scaleY) +
+        "px";
+
+
+    hotspot.style.width =
+        (level.width * scaleX) +
+        "px";
+
+
+    hotspot.style.height =
+        (level.height * scaleY) +
+        "px";
+
+
+    hotspot.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   FOUND ANIMAL
+===================================================== */
+
+hotspot.addEventListener(
+    "click",
+    function() {
+
+
+        if (found)
+            return;
+
+
+        found = true;
+
+
+        score++;
+
+
+        points.innerText =
+            score;
+
+
+        const level =
+            levels[currentLevel];
+
+
+        message.innerHTML =
+            "🎉 Amazing! You found the " +
+            level.animal +
+            "!";
+
+
+        message.classList.remove(
+            "celebrate"
+        );
+
+
+        void message.offsetWidth;
+
+
+        message.classList.add(
+            "celebrate"
+        );
+
+
+        createSuccessEffect();
+
+
+        speak(
+            level.sound
+        );
+
+
+        nextButton.style.display =
+            "inline-block";
+
+    }
+);
+
+
+/* =====================================================
+   SUCCESS EFFECT
+===================================================== */
+
+function createSuccessEffect() {
+
+
+    effects.innerHTML =
+        "";
+
+
+    const centerX =
+        parseFloat(
+            hotspot.style.left
+        ) +
+        parseFloat(
+            hotspot.style.width
+        ) / 2;
+
+
+    const centerY =
+        parseFloat(
+            hotspot.style.top
+        ) +
+        parseFloat(
+            hotspot.style.height
+        ) / 2;
+
+
+    /* GLOW */
+
+    const glow =
+        document.createElement(
+            "div"
+        );
+
+
+    glow.className =
+        "glow";
+
+
+    glow.style.left =
+        centerX + "px";
+
+
+    glow.style.top =
+        centerY + "px";
+
+
+    glow.style.width =
+        Math.max(
+            parseFloat(
+                hotspot.style.width
+            ),
+            90
+        ) + "px";
+
+
+    glow.style.height =
+        Math.max(
+            parseFloat(
+                hotspot.style.height
+            ),
+            90
+        ) + "px";
+
+
+    effects.appendChild(
+        glow
+    );
+
+
+    /* +1 */
+
+    const plus =
+        document.createElement(
+            "div"
+        );
+
+
+    plus.className =
+        "plusOne";
+
+
+    plus.innerText =
+        "+1 ⭐";
+
+
+    plus.style.left =
+        centerX + "px";
+
+
+    plus.style.top =
+        centerY + "px";
+
+
+    effects.appendChild(
+        plus
+    );
+
+
+    /* STARS */
+
+    const stars = [
+        "⭐",
+        "✨",
+        "🌟",
+        "⭐",
+        "✨",
+        "🎉"
+    ];
+
+
+    stars.forEach(
+        function(symbol) {
+
+
+            const star =
+                document.createElement(
+                    "div"
+                );
+
+
+            star.className =
+                "star";
+
+
+            star.innerText =
+                symbol;
+
+
+            star.style.left =
+                centerX + "px";
+
+
+            star.style.top =
+                centerY + "px";
+
+
+            star.style.setProperty(
+                "--x",
+                ((Math.random() - .5) * 450)
+                + "px"
+            );
+
+
+            star.style.setProperty(
+                "--y",
+                ((Math.random() - .5) * 300)
+                + "px"
+            );
+
+
+            effects.appendChild(
+                star
+            );
+
+        }
+    );
+
+
+    /* CONFETTI */
+
+    for (
+        let i = 0;
+        i < 20;
+        i++
+    ) {
+
+
+        const piece =
+            document.createElement(
+                "div"
+            );
+
+
+        piece.className =
+            "confetti";
+
+
+        piece.style.left =
+            centerX + "px";
+
+
+        piece.style.top =
+            centerY + "px";
+
+
+        piece.style.setProperty(
+            "--x",
+            ((Math.random() - .5) * 600)
+            + "px"
+        );
+
+
+        piece.style.setProperty(
+            "--y",
+            ((Math.random() - .2) * 420)
+            + "px"
+        );
+
+
+        effects.appendChild(
+            piece
+        );
+
+    }
+
+
+    setTimeout(
+        function() {
+
+            effects.innerHTML =
+                "";
+
+        },
+        1600
+    );
+
+}
+
+
+/* =====================================================
+   VOICE
+===================================================== */
+
+function speak(text) {
+
+
+    if (
+        !(
+            "speechSynthesis"
+            in window
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    speechSynthesis.cancel();
+
+
+    const voice =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    voice.lang =
+        "en-US";
+
+
+    voice.rate =
+        .8;
+
+
+    voice.pitch =
+        1.1;
+
+
+    speechSynthesis.speak(
+        voice
+    );
+
+}
+
+
+/* =====================================================
+   REPEAT ANIMAL
+===================================================== */
+
+function repeatAnimal() {
+
+
+    const level =
+        levels[currentLevel];
+
+
+    speak(
+        "Find the hidden " +
+        level.animal
+    );
+
+}
+
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+function toggleMusic() {
+
+
+    if (!musicOn) {
+
+
+        music.play()
+        .then(
+            function() {
+
+                musicOn = true;
+
+                musicButton.innerText =
+                    "🔇 Music ON";
+
+            }
+        )
+        .catch(
+            function() {
+
+                musicButton.innerText =
+                    "🎵 Add music";
+
+            }
+        );
+
+
+    } else {
+
+
+        music.pause();
+
+
+        musicOn = false;
+
+
+        musicButton.innerText =
+            "🎵 Music OFF";
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT LEVEL
+===================================================== */
+
+function nextLevel() {
+
+
+    currentLevel++;
+
+
+    if (
+        currentLevel >=
+        levels.length
+    ) {
+
+
+        showFinalScreen();
+
+
+        return;
+
+    }
+
+
+    game.classList.add(
+        "pageChange"
+    );
+
+
+    setTimeout(
+        function() {
+
+
+            game.classList.remove(
+                "pageChange"
+            );
+
+
+            loadLevel();
+
+
+        },
+        300
+    );
+
+}
+
+
+/* =====================================================
+   FINAL SCREEN
+===================================================== */
+
+function showFinalScreen() {
+
+
+    image.style.display =
+        "none";
+
+
+    hotspot.style.display =
+        "none";
+
+
+    effects.innerHTML =
+        "";
+
+
+    message.className =
+        "finalScreen";
+
+
+    message.innerHTML =
+
+        "🏆 Adventure Complete!<br><br>" +
+
+        "🎉 You found all the animals!<br><br>" +
+
+        "⭐ Final Score: " +
+
+        score +
+
+        " / " +
+
+        levels.length;
+
+
+    nextButton.style.display =
+        "none";
+
+
+    createFinalConfetti();
+
+}
+
+
+/* =====================================================
+   FINAL CONFETTI
+===================================================== */
+
+function createFinalConfetti() {
+
+
+    for (
+        let i = 0;
+        i < 35;
+        i++
+    ) {
+
+
+        const piece =
+            document.createElement(
+                "div"
+            );
+
+
+        piece.className =
+            "confetti";
+
+
+        piece.style.left =
+            (Math.random() * 100)
+            + "%";
+
+
+        piece.style.top =
+            "0px";
+
+
+        piece.style.setProperty(
+            "--x",
+            ((Math.random() - .5) * 800)
+            + "px"
+        );
+
+
+        piece.style.setProperty(
+            "--y",
+            (200 + Math.random() * 500)
+            + "px"
+        );
+
+
+        effects.appendChild(
+            piece
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+
+        if (
+            image.complete &&
+            !found
+        ) {
+
+            positionHotspot();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadLevel();
+
+</script>
+
+</body>
+
+</html>
